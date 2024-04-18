@@ -1,0 +1,41 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+// 在当前目录下，生成go代码，并且包名为grpc
+option go_package = ".;grpc";
+
+package grpc;
+
+message DescribeEventRequest{
+  string ResourceType = 1;
+  string ResourceName = 2;
+  string ResourceNamespace = 3;
+}
+
+message Event {
+  string type = 1;
+  string message = 2;
+  string reason = 3;
+  string action = 4;
+  string name = 5;
+  string kind = 6;
+  string related_name = 7;
+  string related_kind = 8;
+  string related_namespace = 9;
+  string involved_object_namespace = 10;
+  string involved_object_kind = 11;
+  string involved_object_name = 12;
+  google.protobuf.Timestamp event_time = 13;
+  int64 count = 14;
+}
+
+message DescribeEventResponse{
+  repeated Event Event = 1;
+  uint32 TotalCount = 2;
+}
+
+service SearchEventService {
+  rpc GetResourceEvents(DescribeEventRequest) returns (DescribeEventResponse) {}
+}
+
